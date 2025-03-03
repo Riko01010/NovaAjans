@@ -118,8 +118,8 @@ export default function ContactSection() {
                 <Mail className="h-6 w-6 text-indigo-700 mr-3 mt-1 drop-shadow-sm" />
                 <div>
                   <h5 className="text-lg font-semibold text-indigo-800">E-posta</h5>
-                  <p className="text-gray-600 mt-1">info@novaajans.ai</p>
-                  <p className="text-gray-600">destek@novaajans.ai</p>
+                  <p className="text-gray-600 mt-1">info@novaajansai.com</p>
+                  <p className="text-gray-600">destek@novaajansai.com</p>
                 </div>
               </div>
             </div>

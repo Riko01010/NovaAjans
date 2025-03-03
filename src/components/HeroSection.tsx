@@ -76,7 +76,7 @@ export default function HeroSection() {
                 className="mt-3 text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl"
               >
                 NOVA AJANS olarak, AI destekli çözümlerimizle markanızı dijital dünyada öne çıkarıyoruz. 
-                Web tasarımdan sosyal medya yönetimine, SEO'dan içerik üretimine kadar tüm dijital ihtiyaçlarınız için yanınızdayız.
+                Web tasarımdan sosyal medya yönetimine, SEO&apos;dan içerik üretimine kadar tüm dijital ihtiyaçlarınız için yanınızdayız.
               </motion.p>
               
               <div className="mt-5 sm:flex sm:justify-center lg:justify-start md:mt-8">

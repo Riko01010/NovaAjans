@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useChat } from 'ai/react';
 import { Send, Bot, User, X } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function ChatComponent() {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,9 +81,11 @@ export default function ChatComponent() {
             aria-label="AI Asistan ile konuşun"
             style={{ width: '70px', height: '70px' }}
           >
-            <img 
+            <Image 
               src="/images/ai-asist.png" 
               alt="AI Asistan" 
+              width={70}
+              height={70}
               className="w-full h-full object-cover"
             />
           </button>
@@ -131,7 +134,7 @@ export default function ChatComponent() {
             {messages.length === 0 ? (
               <div className="text-center text-gray-500 mt-8">
                 <Bot size={40} className="mx-auto mb-2 text-indigo-400" />
-                <p>Merhaba! Ben NOVA AJANS AI'ın asistanıyım.</p>
+                <p>Merhaba! Ben NOVA AJANSAI&apos;ın asistanıyım.</p>
                 <p className="text-sm mt-1">Ajansımız hakkında bir sorunuz mu var?</p>
               </div>
             ) : (
