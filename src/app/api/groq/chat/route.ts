@@ -1,16 +1,34 @@
 import OpenAI from 'openai';
 import { appendResponseMessages } from 'ai';
 
+// API anahtarı var mı kontrol et
+const isGroqConfigured = process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.length > 0;
+
 // Groq API'yi OpenAI uyumlu olarak kullanıyoruz
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY || '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',
-  baseURL: 'https://api.groq.com/openai/v1',
-});
+const openai = isGroqConfigured
+  ? new OpenAI({
+      apiKey: process.env.GROQ_API_KEY || '',
+      baseURL: 'https://api.groq.com/openai/v1',
+    })
+  : null;
 
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
   try {
+    // API anahtarı yoksa hata döndür
+    if (!isGroqConfigured || !openai) {
+      return new Response(
+        JSON.stringify({
+          error: "Groq API anahtarı yapılandırılmamış. Lütfen Vercel'de GROQ_API_KEY çevre değişkenini ekleyin.",
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     // İstek içeriğini alıyoruz
     const body = await req.json();
     const { messages, id } = body;

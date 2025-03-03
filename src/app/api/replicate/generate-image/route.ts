@@ -1,20 +1,31 @@
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
+// API anahtarı var mı kontrol et
+const isReplicateConfigured = process.env.REPLICATE_API_TOKEN && process.env.REPLICATE_API_TOKEN.length > 0;
+
+// Replicate istemcisini koşullu olarak oluştur
+const replicate = isReplicateConfigured
+  ? new Replicate({
+      auth: process.env.REPLICATE_API_TOKEN,
+    })
+  : null;
 
 export async function POST(request: Request) {
-  if (!process.env.REPLICATE_API_TOKEN) {
-    throw new Error(
-      "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it."
+  // API anahtarı yoksa hata döndür
+  if (!isReplicateConfigured || !replicate) {
+    return NextResponse.json(
+      {
+        error: "Replicate API anahtarı yapılandırılmamış. Lütfen Vercel'de REPLICATE_API_TOKEN çevre değişkenini ekleyin.",
+        output: null,
+      },
+      { status: 400 }
     );
   }
 
-  const { prompt } = await request.json();
-
   try {
+    const { prompt } = await request.json();
+
     const output = await replicate.run(
       "stability-ai/stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf",
       {
@@ -32,6 +43,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ output }, { status: 200 });
   } catch (error) {
     console.error("Error from Replicate API:", error);
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message, output: null }, { status: 500 });
   }
 }
