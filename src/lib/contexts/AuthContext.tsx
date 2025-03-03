@@ -1,9 +1,13 @@
 "use client";
 
 import React, { createContext, useEffect, useState } from "react";
-import { signInWithPopup, GoogleAuthProvider, signOut as firebaseSignOut } from "firebase/auth";
-import { User } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, signOut as firebaseSignOut, User } from "firebase/auth";
 import { auth } from "../firebase/firebase";
+
+// Firebase API anahtarı var mı kontrol et
+const isFirebaseConfigured = typeof window !== 'undefined' && 
+  process.env.NEXT_PUBLIC_FIREBASE_API_KEY && 
+  process.env.NEXT_PUBLIC_FIREBASE_API_KEY.length > 0;
 
 interface AuthContextType {
   user: User | null;
@@ -24,6 +28,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!isFirebaseConfigured) {
+      setLoading(false);
+      return () => {};
+    }
+
     try {
       const unsubscribe = auth.onAuthStateChanged((user) => {
         setUser(user);
@@ -39,6 +48,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signInWithGoogle = async () => {
+    if (!isFirebaseConfigured) {
+      console.warn("Firebase is not configured. Authentication is disabled.");
+      return;
+    }
+
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
@@ -48,6 +62,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOutUser = async () => {
+    if (!isFirebaseConfigured) {
+      console.warn("Firebase is not configured. Authentication is disabled.");
+      return;
+    }
+
     try {
       await firebaseSignOut(auth);
     } catch (error) {
