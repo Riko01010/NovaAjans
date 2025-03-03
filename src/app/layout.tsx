@@ -1,4 +1,9 @@
 import "./globals.css";
+import Providers from "./Providers";
+import dynamic from 'next/dynamic';
+
+// ChatComponent'i client-side olarak yüklüyoruz
+const ChatComponent = dynamic(() => import('@/components/ChatComponent'), { ssr: false });
 
 export default function RootLayout({
   children,
@@ -7,7 +12,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>
+          {children}
+          <ChatComponent />
+        </Providers>
+      </body>
     </html>
   );
 }

@@ -24,17 +24,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-      setLoading(false);
-    });
+    try {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        setUser(user);
+        setLoading(false);
+      });
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    } catch (error) {
+      console.error("Error setting up auth state listener:", error);
+      setLoading(false);
+      return () => {};
+    }
   }, []);
 
   const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
     try {
+      const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Error signing in with Google", error);
