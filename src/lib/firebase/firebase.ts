@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getStorage, FirebaseStorage } from "firebase/storage";
 
 // Firebase yapılandırması
 const firebaseConfig = {
@@ -18,8 +18,8 @@ const isFirebaseConfigured = process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process
 
 let app;
 let auth: Auth;
-let db;
-let storage;
+let db: Firestore;
+let storage: FirebaseStorage;
 
 if (isFirebaseConfigured) {
   // Firebase uygulamasını başlat
@@ -37,8 +37,8 @@ if (isFirebaseConfigured) {
       return () => {};
     },
   } as unknown as Auth;
-  db = {} as any;
-  storage = {} as any;
+  db = {} as unknown as Firestore;
+  storage = {} as unknown as FirebaseStorage;
 }
 
 export { app, auth, db, storage };
