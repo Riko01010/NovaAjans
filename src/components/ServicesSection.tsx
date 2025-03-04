@@ -2,37 +2,44 @@
 
 import { motion } from 'framer-motion';
 import { Globe, Cpu, Search, PenTool, Instagram, BarChart } from 'lucide-react';
+import Link from 'next/link';
 
 const services = [
   {
     icon: <Globe className="h-10 w-10 text-indigo-700 drop-shadow-sm" />,
     title: "Web Tasarım & Geliştirme",
-    description: "Modern, duyarlı ve kullanıcı dostu web siteleri tasarlıyor ve geliştiriyoruz. SEO dostu, hızlı yüklenen ve tüm cihazlarda mükemmel görünen siteler."
+    description: "Modern, duyarlı ve kullanıcı dostu web siteleri tasarlıyor ve geliştiriyoruz. SEO dostu, hızlı yüklenen ve tüm cihazlarda mükemmel görünen siteler.",
+    link: "/hizmetler/web-tasarim"
   },
   {
     icon: <Cpu className="h-10 w-10 text-indigo-700 drop-shadow-sm" />,
     title: "AI Destekli Pazarlama",
-    description: "Yapay zeka teknolojileri ile pazarlama stratejilerinizi optimize ediyoruz. Kişiselleştirilmiş içerik, akıllı hedefleme ve veri odaklı kampanyalar."
+    description: "Yapay zeka teknolojileri ile pazarlama stratejilerinizi optimize ediyoruz. Kişiselleştirilmiş içerik, akıllı hedefleme ve veri odaklı kampanyalar.",
+    link: "/hizmetler/ai-pazarlama"
   },
   {
     icon: <Search className="h-10 w-10 text-indigo-700 drop-shadow-sm" />,
     title: "SEO Optimizasyonu",
-    description: "Arama motorlarında üst sıralarda yer almanızı sağlıyoruz. Anahtar kelime araştırması, içerik optimizasyonu ve teknik SEO hizmetleri."
+    description: "Arama motorlarında üst sıralarda yer almanızı sağlıyoruz. Anahtar kelime araştırması, içerik optimizasyonu ve teknik SEO hizmetleri.",
+    link: "/hizmetler/seo-optimizasyonu"
   },
   {
     icon: <PenTool className="h-10 w-10 text-indigo-700 drop-shadow-sm" />,
     title: "İçerik Üretimi",
-    description: "Markanızı yansıtan, hedef kitlenizi etkileyen ve dönüşüm sağlayan içerikler üretiyoruz. Blog yazıları, sosyal medya içerikleri ve daha fazlası."
+    description: "Markanızı yansıtan, hedef kitlenizi etkileyen ve dönüşüm sağlayan içerikler üretiyoruz. Blog yazıları, sosyal medya içerikleri ve daha fazlası.",
+    link: "/hizmetler/icerik-uretimi"
   },
   {
     icon: <Instagram className="h-10 w-10 text-indigo-700 drop-shadow-sm" />,
     title: "Sosyal Medya Yönetimi",
-    description: "Sosyal medya varlığınızı güçlendiriyoruz. İçerik planlaması, topluluk yönetimi ve etkileşim artırma stratejileri."
+    description: "Sosyal medya varlığınızı güçlendiriyoruz. İçerik planlaması, topluluk yönetimi ve etkileşim artırma stratejileri.",
+    link: "/hizmetler/sosyal-medya"
   },
   {
     icon: <BarChart className="h-10 w-10 text-indigo-700 drop-shadow-sm" />,
     title: "Analitik & Raporlama",
-    description: "Veriye dayalı kararlar almanızı sağlıyoruz. Detaylı analitik, performans takibi ve düzenli raporlama hizmetleri."
+    description: "Veriye dayalı kararlar almanızı sağlıyoruz. Detaylı analitik, performans takibi ve düzenli raporlama hizmetleri.",
+    link: "#"
   }
 ];
 
@@ -67,9 +74,17 @@ export default function ServicesSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100"
             >
-              <div className="mb-5">{service.icon}</div>
-              <h4 className="text-xl font-bold text-indigo-800 mb-3">{service.title}</h4>
-              <p className="text-gray-600">{service.description}</p>
+              <Link href={service.link} className="block h-full">
+                <div className="mb-5">{service.icon}</div>
+                <h4 className="text-xl font-bold text-indigo-800 mb-3">{service.title}</h4>
+                <p className="text-gray-600">{service.description}</p>
+                <div className="mt-4 text-indigo-700 font-medium flex items-center">
+                  Detaylı Bilgi
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>

@@ -46,27 +46,27 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Hizmetlerimiz</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/services/web-design" className="text-indigo-200 hover:text-white transition-colors">
+                <Link href="/hizmetler/web-tasarim" className="text-indigo-200 hover:text-white transition-colors">
                   Web Tasarım
                 </Link>
               </li>
               <li>
-                <Link href="/services/ai-marketing" className="text-indigo-200 hover:text-white transition-colors">
+                <Link href="/hizmetler/ai-pazarlama" className="text-indigo-200 hover:text-white transition-colors">
                   AI Destekli Pazarlama
                 </Link>
               </li>
               <li>
-                <Link href="/services/seo" className="text-indigo-200 hover:text-white transition-colors">
+                <Link href="/hizmetler/seo-optimizasyonu" className="text-indigo-200 hover:text-white transition-colors">
                   SEO Optimizasyonu
                 </Link>
               </li>
               <li>
-                <Link href="/services/content-creation" className="text-indigo-200 hover:text-white transition-colors">
+                <Link href="/hizmetler/icerik-uretimi" className="text-indigo-200 hover:text-white transition-colors">
                   İçerik Üretimi
                 </Link>
               </li>
               <li>
-                <Link href="/services/social-media" className="text-indigo-200 hover:text-white transition-colors">
+                <Link href="/hizmetler/sosyal-medya" className="text-indigo-200 hover:text-white transition-colors">
                   Sosyal Medya Yönetimi
                 </Link>
               </li>
