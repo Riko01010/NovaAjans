@@ -1,6 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 import { convertToCoreMessages, streamText } from "ai";
 import { NextResponse } from "next/server";
+import { NOVA_SYSTEM_PROMPT } from "@/lib/constants";
 
 export const runtime = "edge";
 
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
     const result = await streamText({
       model: openai("gpt-4o"),
       messages: convertToCoreMessages(messages),
-      system: "You are a helpful AI assistant",
+      system: NOVA_SYSTEM_PROMPT,
     });
 
     return result.toDataStreamResponse();

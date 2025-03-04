@@ -1,6 +1,7 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { convertToCoreMessages, streamText } from "ai";
 import { NextResponse } from "next/server";
+import { NOVA_SYSTEM_PROMPT } from "@/lib/constants";
 
 export const runtime = "edge";
 
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
     const result = await streamText({
       model: anthropic("claude-3-5-sonnet-20240620"),
       messages: convertToCoreMessages(messages),
-      system: "You are a helpful AI assistant",
+      system: NOVA_SYSTEM_PROMPT,
     });
 
     return result.toDataStreamResponse();

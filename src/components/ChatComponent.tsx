@@ -6,9 +6,21 @@ import { Send, Bot, User, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
+// AI sağlayıcıları
+const AI_PROVIDERS = {
+  GROQ: '/api/groq/chat',
+  OPENAI: '/api/openai/chat',
+  ANTHROPIC: '/api/anthropic/chat'
+};
+
 export default function ChatComponent() {
   const [isOpen, setIsOpen] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Kullanılacak AI sağlayıcısını belirle
+  // Önce Groq'u dene, çalışmazsa OpenAI'ya, o da çalışmazsa Anthropic'e geç
+  const [apiEndpoint, setApiEndpoint] = useState(AI_PROVIDERS.GROQ);
+  const [apiError, setApiError] = useState<string | null>(null);
   
   // Generate a unique chat ID for this user if one doesn't exist
   const [chatId] = useState(() => {
@@ -31,10 +43,25 @@ export default function ChatComponent() {
     ? JSON.parse(localStorage.getItem('nova_chat_messages') || '[]') 
     : [];
   
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: '/api/groq/chat',
+  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+    api: apiEndpoint,
     id: chatId,
     initialMessages,
+    onError: (error) => {
+      console.error("Chat error:", error);
+      setApiError(error.message);
+      
+      // Eğer Groq hata verirse, OpenAI'ya geç
+      if (apiEndpoint === AI_PROVIDERS.GROQ) {
+        console.log("Switching from Groq to OpenAI");
+        setApiEndpoint(AI_PROVIDERS.OPENAI);
+      } 
+      // Eğer OpenAI hata verirse, Anthropic'e geç
+      else if (apiEndpoint === AI_PROVIDERS.OPENAI) {
+        console.log("Switching from OpenAI to Anthropic");
+        setApiEndpoint(AI_PROVIDERS.ANTHROPIC);
+      }
+    }
   });
 
   // Save messages to localStorage whenever they change
@@ -174,6 +201,11 @@ export default function ChatComponent() {
                     <div className="w-2 h-2 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                   </div>
                 </div>
+              </div>
+            )}
+            {apiError && !isLoading && (
+              <div className="text-center text-red-500 text-sm bg-red-50 p-2 rounded-lg">
+                <p>AI servisi şu anda yanıt veremiyor. Lütfen daha sonra tekrar deneyin.</p>
               </div>
             )}
           </div>
