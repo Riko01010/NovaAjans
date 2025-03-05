@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, useRef } from 'react';
+import { useState, ChangeEvent, FormEvent, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import emailjs from '@emailjs/browser';
@@ -18,6 +18,14 @@ export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  
+  // EmailJS'yi başlat
+  useEffect(() => {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    if (publicKey) {
+      emailjs.init(publicKey);
+    }
+  }, []);
   
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -45,10 +53,12 @@ export default function ContactSection() {
     try {
       // EmailJS ile e-posta gönderme
       const result = await emailjs.sendForm(
-        serviceId,
-        templateId,
+        serviceId as string,
+        templateId as string,
         formRef.current as HTMLFormElement,
-        publicKey
+        {
+          publicKey: publicKey as string,
+        }
       );
       
       console.log('E-posta gönderildi!', result.text);
