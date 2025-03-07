@@ -15,6 +15,12 @@ const openai = isGroqConfigured
 
 export const runtime = 'edge';
 
+// Düşünme kısımlarını gizleyen yardımcı fonksiyon
+function processThinking(text: string): string {
+  // <think>...</think> etiketleri arasındaki içeriği gizle
+  return text.replace(/<think>.*?<\/think>/gs, '');
+}
+
 export async function POST(req: Request) {
   try {
     // API anahtarı yoksa hata döndür
@@ -102,7 +108,7 @@ export async function POST(req: Request) {
         try {
           // Groq API'ye istek gönderiyoruz
           const completion = await openai.chat.completions.create({
-            model: 'qwen-2.5-32b',
+            model: 'QwQ-32B',
             messages: [
               {
                 role: 'system',
@@ -118,8 +124,11 @@ export async function POST(req: Request) {
           
           // Stream'i işliyoruz - Vercel AI SDK'nın data stream protokolüne uygun olarak
           for await (const chunk of completion) {
-            const content = chunk.choices[0]?.delta?.content || '';
+            let content = chunk.choices[0]?.delta?.content || '';
             if (content) {
+              // Düşünme kısımlarını işle
+              content = processThinking(content);
+              
               // Yanıt içeriğini biriktiriyoruz
               responseContent += content;
               
