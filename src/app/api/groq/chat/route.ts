@@ -18,7 +18,7 @@ export const runtime = 'edge';
 // Düşünme kısımlarını gizleyen yardımcı fonksiyon
 function processThinking(text: string): string {
   // <think>...</think> etiketleri arasındaki içeriği gizle
-  return text.replace(/<think>.*?<\/think>/gs, '');
+  return text.replace(/<think>[\s\S]*?<\/think>/g, '');
 }
 
 export async function POST(req: Request) {
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
         try {
           // Groq API'ye istek gönderiyoruz
           const completion = await openai.chat.completions.create({
-            model: 'QwQ-32B',
+            model: 'llama3-70b-8192',
             messages: [
               {
                 role: 'system',
