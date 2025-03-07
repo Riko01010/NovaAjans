@@ -17,8 +17,16 @@ export const runtime = 'edge';
 
 // Düşünme kısımlarını gizleyen yardımcı fonksiyon
 function processThinking(text: string): string {
-  // <think>...</think> etiketleri arasındaki içeriği gizle
-  return text.replace(/<think>[\s\S]*?<\/think>/g, '');
+  // Tüm düşünme etiketlerini ve içeriklerini temizle
+  let processed = text;
+  
+  // Etiketler arası içeriği temizle
+  processed = processed.replace(/<think>[\s\S]*?<\/think>/g, '');
+  
+  // Açık kalan etiketleri temizle
+  processed = processed.replace(/<\/?think>/g, '');
+  
+  return processed;
 }
 
 export async function POST(req: Request) {
@@ -108,7 +116,7 @@ export async function POST(req: Request) {
         try {
           // Groq API'ye istek gönderiyoruz
           const completion = await openai.chat.completions.create({
-            model: 'llama3-70b-8192',
+            model: 'deepseek-r1-distill-llama-70b',
             messages: [
               {
                 role: 'system',
@@ -126,14 +134,17 @@ export async function POST(req: Request) {
           for await (const chunk of completion) {
             let content = chunk.choices[0]?.delta?.content || '';
             if (content) {
-              // Düşünme kısımlarını işle
+              // Düşünme kısımlarını filtreleme işlemi burada yapılıyor
               content = processThinking(content);
               
-              // Yanıt içeriğini biriktiriyoruz
-              responseContent += content;
-              
-              // Text part formatı: 0:"metin"\n
-              controller.enqueue(encoder.encode(`0:${JSON.stringify(content)}\n`));
+              // Boş içerik kontrolü
+              if (content.trim()) {
+                // Yanıt içeriğini biriktiriyoruz
+                responseContent += content;
+                
+                // Text part formatı: 0:"metin"\n
+                controller.enqueue(encoder.encode(`0:${JSON.stringify(content)}\n`));
+              }
             }
           }
           
