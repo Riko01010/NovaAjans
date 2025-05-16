@@ -2,13 +2,38 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 
 export default function DijitalReklamBlogPost() {
+  // Animasyon için state'ler
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  
   // Paylaşım URL'leri için gerekli bilgiler
-  const pageTitle = "Dijital Reklamın Önemi ve Etkili Stratejiler";
+  const pageTitle = "Dijital Reklamın Önemi ve Etkili Stratejiler | NOVA AJANS";
   const pageUrl = "https://novaajans.com/blog/dijital-reklamin-onemi";
+  
+  useEffect(() => {
+    setIsVisible(true);
+    
+    // Scroll gözlemcisi oluştur
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    // Tüm bölümleri izle
+    document.querySelectorAll('section[id]').forEach(section => {
+      observer.observe(section);
+    });
+    
+    return () => observer.disconnect();
+  }, []);
   
   // Paylaşım fonksiyonları
   const shareOnFacebook = () => {
@@ -19,10 +44,6 @@ export default function DijitalReklamBlogPost() {
     window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`, '_blank');
   };
   
-  const shareOnWhatsApp = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(pageTitle + ' ' + pageUrl)}`, '_blank');
-  };
-  
   const shareOnLinkedIn = () => {
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank');
   };
@@ -30,21 +51,30 @@ export default function DijitalReklamBlogPost() {
   return (
     <>
       <Navbar />
-      <div className="bg-gradient-to-b from-blue-50 to-white py-12 pt-24">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <Link href="/blog" className="text-blue-600 hover:text-blue-800 mb-6 inline-flex items-center gap-2 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      
+      {/* Hero Bölümü */}
+      <div className="relative overflow-hidden">
+        {/* Arkaplan desenli gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-800 via-purple-700 to-pink-800 opacity-90">
+          <div className="absolute inset-0 bg-grid-white/[0.05]"></div>
+        </div>
+        
+        <div className="container relative mx-auto px-6 py-28 max-w-6xl">
+          <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <Link href="/blog" className="inline-flex items-center text-blue-100 hover:text-white mb-6 transition-all hover:gap-2 backdrop-blur-sm bg-white/10 rounded-full py-1 px-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            Blog'a Dön
-          </Link>
+              Blog Ana Sayfası
+        </Link>
           
-          <article className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-            <h1 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">Dijital Reklamın Önemi ve Etkili Stratejiler</h1>
+            <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
+              Dijital <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-cyan-300">Reklamın</span> Önemi ve Stratejileri
+            </h1>
             
-            <div className="flex items-center text-gray-500 mb-8">
-              <span className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+            <div className="flex flex-wrap items-center text-blue-100 gap-6 mb-8">
+              <span className="flex items-center backdrop-blur-sm bg-white/10 rounded-full px-4 py-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                   <line x1="16" y1="2" x2="16" y2="6"></line>
                   <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -52,172 +82,356 @@ export default function DijitalReklamBlogPost() {
                 </svg>
                 29 Haziran 2024
               </span>
-              <span className="mx-3">•</span>
-              <span className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+              
+              <span className="flex items-center backdrop-blur-sm bg-white/10 rounded-full px-4 py-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                NOVA AJANS
+                NOVA AI Pazarlama Ekibi
               </span>
-              <span className="mx-3">•</span>
-              <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Dijital Pazarlama</span>
+              
+              <span className="backdrop-blur-sm bg-gradient-to-r from-pink-500/70 to-purple-500/70 text-white font-medium px-4 py-2 rounded-full">
+                Dijital Pazarlama & AI
+              </span>
             </div>
-            
-            <div className="relative h-96 w-full mb-8 rounded-xl overflow-hidden">
+          </div>
+        </div>
+      </div>
+        
+      {/* İçerik Bölümü */}
+      <div className="bg-gradient-to-b from-slate-50 to-white py-16">
+        <div className="container mx-auto px-4 max-w-4xl">
+          
+          <article className="bg-white rounded-xl shadow-xl overflow-hidden">
+            {/* Ana görsel */}
+            <div className="relative h-[500px] w-full overflow-hidden">
               <Image 
                 src="/images/blog/bblog3.jpg" 
                 alt="Dijital Reklam & Pazarlama" 
                 fill
-                className="object-cover"
+                className="object-cover object-center"
                 priority
               />
-            </div>
-            
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-purple-900/70"></div>
+              <div className="absolute bottom-0 left-0 p-8 w-full">
+                <h2 className="text-white text-2xl md:text-3xl font-bold">
+                  Teknoloji ile dönüşen dijital reklam stratejileri
+                </h2>
+              </div>
+          </div>
+          
+            {/* İçerik grupları */}
+            <div className="p-8">
+              <section id="intro" className="mb-16">
             <div className="prose prose-lg max-w-none">
-              <h2>Dijital Çağda Reklamın Dönüşümü</h2>
+                  <p className="text-xl lead font-medium text-gray-800">
+            Dijital teknolojilerin yaygınlaşmasıyla birlikte, reklam dünyası da köklü bir dönüşüm geçirdi. 
+                    Geleneksel reklam kanalları yerini dijital platformlara bırakırken, 
+                    işletmeler için dijital reklamın önemi her geçen gün artıyor.
+          </p>
               
-              <p>
-                Dijital teknolojilerin yaygınlaşmasıyla birlikte, reklam dünyası da köklü bir dönüşüm geçirdi. 
-                Geleneksel reklam kanalları (televizyon, radyo, basılı medya) yerini dijital platformlara bırakırken, 
-                işletmeler için dijital reklamın önemi her geçen gün artıyor. Bu blog yazısında, dijital reklamın 
-                neden bu kadar önemli olduğunu ve işletmeniz için etkili dijital reklam stratejilerini inceleyeceğiz.
-              </p>
-              
-              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 my-6 rounded-r">
-                <p className="text-blue-800 font-medium">
+                  <div className="my-10 p-6 bg-gradient-to-r from-purple-50 to-pink-50 border-l-4 border-purple-500 rounded-r-xl">
+                    <p className="text-lg font-semibold text-purple-800 italic">
                   "Dijital reklam, hedef kitlenize doğru zamanda, doğru yerde ve doğru mesajla ulaşmanın en etkili yoludur."
                 </p>
               </div>
-              
-              <h2>Dijital Reklamın Avantajları</h2>
-              
-              <p>
-                Dijital reklamın geleneksel reklam yöntemlerine göre birçok avantajı bulunuyor:
-              </p>
-              
-              <ul>
-                <li><strong>Hedefleme Hassasiyeti:</strong> Dijital reklamlar, demografik özellikler, ilgi alanları, 
-                davranışlar ve konum gibi faktörlere göre çok daha hassas bir şekilde hedeflenebilir.</li>
-                <li><strong>Ölçülebilirlik:</strong> Dijital reklamların performansı gerçek zamanlı olarak izlenebilir, 
-                bu da kampanyaların hızla optimize edilmesine olanak tanır.</li>
-                <li><strong>Maliyet Etkinliği:</strong> Dijital reklamlar, geleneksel reklam kanallarına göre genellikle 
-                daha düşük maliyetlidir ve daha yüksek ROI (Yatırım Getirisi) sağlar.</li>
-                <li><strong>Etkileşim İmkanı:</strong> Dijital reklamlar, tüketicilerle doğrudan etkileşim kurma 
-                fırsatı sunar.</li>
-                <li><strong>Esneklik:</strong> Kampanyalar hızla başlatılabilir, durdurulabilir veya değiştirilebilir.</li>
-              </ul>
-              
-              <p>
-                Bu avantajlar, işletmelerin pazarlama bütçelerini daha verimli kullanmalarını ve hedef kitlelerine 
-                daha etkili bir şekilde ulaşmalarını sağlıyor.
-              </p>
-              
-              <h2>Etkili Dijital Reklam Kanalları</h2>
-              
-              <p>
-                Başarılı bir dijital reklam stratejisi için, doğru kanalları seçmek ve bu kanalları etkin bir şekilde 
-                kullanmak önemli. İşte en etkili dijital reklam kanalları:
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-                  <h3 className="text-xl font-bold mb-3 text-blue-600">1. Arama Motoru Reklamları (SEM)</h3>
-                  <p>
-                    Google Ads gibi platformlar aracılığıyla, potansiyel müşteriler belirli anahtar kelimeleri aradığında 
-                    reklamlarınızın görünmesini sağlayabilirsiniz. Bu tür reklamlar, satın alma niyeti yüksek kullanıcılara 
-                    ulaşmanın en etkili yollarından biridir.
-                  </p>
                 </div>
+              </section>
+              
+              {/* Animasyonlu içerik kartları */}
+              <section id="avantajlar" className="mb-16">
+                <h2 className="text-3xl font-bold mb-8 text-purple-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                  </svg>
+                  Dijital Reklamın Avantajları
+                </h2>
                 
-                <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-                  <h3 className="text-xl font-bold mb-3 text-blue-600">2. Sosyal Medya Reklamları</h3>
-                  <p>
-                    Facebook, Instagram, Twitter, LinkedIn ve TikTok gibi platformlarda reklam vermek, hedef kitlenize 
-                    demografik özellikler, ilgi alanları ve davranışlara göre ulaşmanızı sağlar. Her platform farklı 
-                    hedef kitlelere ve reklam formatlarına sahiptir.
-                  </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-pink-100 hover:scale-[1.02] transform">
+                    <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-400"></div>
+                    <div className="p-6">
+                      <h3 className="font-bold text-xl mb-3 text-gray-800">Hassas Hedefleme</h3>
+                      <p className="text-gray-600">
+                        Dijital reklamlar, demografik özellikler, ilgi alanları, davranışlar ve konum gibi faktörlere 
+                        göre çok daha hassas bir şekilde hedeflenebilir.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-blue-100 hover:scale-[1.02] transform">
+                    <div className="h-2 bg-gradient-to-r from-blue-500 to-cyan-400"></div>
+                    <div className="p-6">
+                      <h3 className="font-bold text-xl mb-3 text-gray-800">Ölçülebilirlik</h3>
+                      <p className="text-gray-600">
+                        Dijital reklamların performansı gerçek zamanlı olarak izlenebilir, 
+                        bu da kampanyaların hızla optimize edilmesine olanak tanır.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-green-100 hover:scale-[1.02] transform">
+                    <div className="h-2 bg-gradient-to-r from-green-500 to-teal-400"></div>
+                    <div className="p-6">
+                      <h3 className="font-bold text-xl mb-3 text-gray-800">Maliyet Etkinliği</h3>
+                      <p className="text-gray-600">
+                        Dijital reklamlar, geleneksel reklam kanallarına göre genellikle daha düşük maliyetlidir ve 
+                        daha yüksek ROI (Yatırım Getirisi) sağlar.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-orange-100 hover:scale-[1.02] transform">
+                    <div className="h-2 bg-gradient-to-r from-orange-500 to-amber-400"></div>
+                    <div className="p-6">
+                      <h3 className="font-bold text-xl mb-3 text-gray-800">Etkileşim İmkanı</h3>
+                      <p className="text-gray-600">
+                        Dijital reklamlar, tüketicilerle doğrudan etkileşim kurma fırsatı sunar ve markanızla 
+                        daha güçlü bağlar oluşturmanızı sağlar.
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-                  <h3 className="text-xl font-bold mb-3 text-blue-600">3. Görüntülü Reklamlar</h3>
-                  <p>
-                    Google Display Network ve diğer reklam ağları aracılığıyla, web sitelerinde, uygulamalarda ve 
-                    videolarda görsel reklamlar gösterebilirsiniz. Bu reklamlar, marka bilinirliğini artırmak için 
-                    özellikle etkilidir.
+          
+                <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-6 text-white my-10 transform transition-transform hover:scale-[1.01] shadow-xl">
+                  <h3 className="text-xl font-bold mb-4">NOVA AI Dijital Reklam Çözümleri</h3>
+                  <p className="mb-6">
+                    NOVA AJANS olarak, AI destekli dijital reklam çözümlerimizle kampanyalarınızı güçlendiriyor, 
+                    hedefleme hassasiyetini artırıyor ve daha yüksek dönüşümler sağlıyoruz.
                   </p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                      <span className="block text-3xl font-bold mb-2">320%</span>
+                      <span className="text-sm">Daha Fazla Etkileşim</span>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                      <span className="block text-3xl font-bold mb-2">180%</span>
+                      <span className="text-sm">ROI Artışı</span>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                      <span className="block text-3xl font-bold mb-2">45%</span>
+                      <span className="text-sm">Düşük CPC</span>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                      <span className="block text-3xl font-bold mb-2">98%</span>
+                      <span className="text-sm">Müşteri Memnuniyeti</span>
+                    </div>
+                  </div>
                 </div>
+              </section>
+              
+              {/* Dijital Reklam Kanalları */}
+              <section id="reklam-kanallari" className="mb-16">
+                <h2 className="text-3xl font-bold mb-8 text-purple-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                  Etkili Dijital Reklam Kanalları
+                </h2>
                 
-                <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-                  <h3 className="text-xl font-bold mb-3 text-blue-600">4. Video Reklamları</h3>
-                  <p>
-                    YouTube ve diğer video platformlarında gösterilen reklamlar, karmaşık mesajları iletmek ve duygusal 
-                    bağ kurmak için mükemmel bir araçtır. Video içeriği, tüketicilerin dikkatini çekmede ve akılda 
-                    kalıcılığı artırmada oldukça etkilidir.
-                  </p>
+                <div className="bg-gradient-to-br from-gray-50 to-purple-50 p-8 rounded-xl border border-purple-100 mb-10">
+                  <div className="flex flex-col md:flex-row items-start gap-8">
+                    <div className="md:w-1/3">
+                      <div className="aspect-square bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center p-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 11 12 14 22 4"></polyline>
+                          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="md:w-2/3">
+                      <h3 className="text-2xl font-bold mb-4 text-purple-900">AI ile Güçlendirilmiş Reklam Kanalları</h3>
+                      <p className="text-gray-700 mb-4">
+                        Başarılı bir dijital reklam stratejisi için, doğru kanalları seçmek ve bu kanalları etkin bir şekilde 
+                        kullanmak önemli. NOVA AI olarak, yapay zeka destekli reklam kanal optimizasyonu sunuyoruz.
+                      </p>
+                      <div className="bg-white rounded-lg p-4 shadow-sm mb-4">
+                        <h4 className="font-semibold text-purple-800 mb-2">Arama Motoru Reklamları (SEM)</h4>
+                        <p className="text-gray-700">
+                          AI destekli anahtar kelime analizi ve teklif optimizasyonu ile Google Ads kampanyalarınızdan 
+                          maksimum dönüşüm elde edin.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 className="font-semibold text-purple-800 mb-2">Sosyal Medya Reklamları</h4>
+                        <p className="text-gray-700">
+                          Yapay zeka algoritmalarımızla, hedef kitlenize en uygun sosyal medya platformlarını belirler ve 
+                          içerik stratejinizi optimize ederiz.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 hover:border-blue-300 transition-colors">
+                    <h3 className="text-xl font-bold mb-3 text-blue-600">Görüntülü Reklamlar</h3>
+                    <p className="text-gray-600">
+            Google Display Network ve diğer reklam ağları aracılığıyla, web sitelerinde, uygulamalarda ve 
+            videolarda görsel reklamlar gösterebilirsiniz. Bu reklamlar, marka bilinirliğini artırmak için 
+            özellikle etkilidir.
+          </p>
+                </div>
+          
+                  <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 hover:border-red-300 transition-colors">
+                    <h3 className="text-xl font-bold mb-3 text-red-600">Video Reklamları</h3>
+                    <p className="text-gray-600">
+            YouTube ve diğer video platformlarında gösterilen reklamlar, karmaşık mesajları iletmek ve duygusal 
+            bağ kurmak için mükemmel bir araçtır. Video içeriği, tüketicilerin dikkatini çekmede ve akılda 
+            kalıcılığı artırmada oldukça etkilidir.
+          </p>
                 </div>
               </div>
+              </section>
               
-              <p>
-                Bunların yanı sıra, e-posta pazarlaması ve influencer pazarlaması da dijital reklam stratejinizin 
-                önemli bileşenleri olabilir. E-posta pazarlaması, doğrudan müşterilerinizle iletişim kurmanın en etkili 
-                yollarından biridir ve kişiselleştirilmiş içerik sunmanıza olanak tanır. Influencer pazarlaması ise 
-                sosyal medya fenomenleri aracılığıyla ürün veya hizmetlerinizi tanıtarak hedef kitlenizle güven 
-                oluşturmanızı sağlar.
-              </p>
-              
-              <h2>Etkili Dijital Reklam Stratejileri</h2>
-              
-              <p>
-                Dijital reklam kampanyalarınızın başarılı olması için uygulamanız gereken stratejiler:
-              </p>
-              
-              <ol>
-                <li><strong>Net Hedefler Belirleyin:</strong> Kampanyanızın amacını (marka bilinirliği, web sitesi 
-                trafiği, satış, müşteri sadakati vb.) net bir şekilde tanımlayın.</li>
-                <li><strong>Hedef Kitlenizi Tanıyın:</strong> Hedef kitlenizin demografik özellikleri, ilgi alanları, 
-                davranışları ve ihtiyaçları hakkında detaylı bilgi edinin.</li>
-                <li><strong>Çok Kanallı Bir Yaklaşım Benimseyin:</strong> Farklı dijital reklam kanallarını bir arada 
-                kullanarak, hedef kitlenize farklı temas noktalarında ulaşın.</li>
-                <li><strong>İçeriğinizi Kişiselleştirin:</strong> Hedef kitlenizin farklı segmentlerine özel içerik 
-                ve teklifler sunun.</li>
-                <li><strong>Mobil Uyumluluğa Önem Verin:</strong> Reklamlarınızın ve varış sayfalarınızın mobil 
-                cihazlarda mükemmel bir deneyim sunduğundan emin olun.</li>
-                <li><strong>A/B Testleri Yapın:</strong> Farklı reklam metinleri, görseller, hedef kitle segmentleri 
-                ve varış sayfaları test ederek, en iyi performans gösteren kombinasyonu bulun.</li>
-                <li><strong>Veri Analitiğinden Yararlanın:</strong> Kampanya verilerinizi düzenli olarak analiz edin 
-                ve bu verilere dayanarak stratejinizi optimize edin.</li>
-                <li><strong>Yeniden Hedefleme Yapın:</strong> Web sitenizi ziyaret eden veya uygulamanızı kullanan 
-                ancak dönüşüm gerçekleştirmeyen kullanıcıları yeniden hedefleyin.</li>
-              </ol>
-              
-              <h2>Dijital Reklam Trendleri</h2>
-              
-              <p>
-                Dijital reklam dünyası sürekli evrim geçiriyor. İşte yakından takip etmeniz gereken güncel trendler:
-              </p>
-              
-              <ul>
-                <li><strong>Yapay Zeka ve Makine Öğrenimi:</strong> Reklam hedefleme, içerik oluşturma ve optimizasyon 
-                süreçlerinde AI teknolojilerinin kullanımı artıyor.</li>
-                <li><strong>Programatik Reklamcılık:</strong> Otomatik teklif verme sistemleri, reklam satın alma 
-                süreçlerini daha verimli hale getiriyor.</li>
-                <li><strong>Sesli Arama Optimizasyonu:</strong> Sesli asistanların yaygınlaşmasıyla, sesli aramaya 
-                yönelik reklamlar önem kazanıyor.</li>
-                <li><strong>Artırılmış Gerçeklik (AR) Reklamları:</strong> AR teknolojisi, tüketicilere interaktif 
-                ve sürükleyici deneyimler sunuyor.</li>
-                <li><strong>Gizlilik Odaklı Reklamcılık:</strong> Veri gizliliği düzenlemeleri ve çerez kullanımındaki 
-                değişiklikler, reklam stratejilerini etkiliyor.</li>
-              </ul>
-              
-              <h2>NOVA AJANS'ın Dijital Reklam Hizmetleri</h2>
-              
-              <p>
-                NOVA AJANS olarak, işletmenizin dijital reklam stratejisini geliştirmek ve uygulamak için kapsamlı 
-                hizmetler sunuyoruz. Google Ads, sosyal medya reklamları, görüntülü reklamlar ve daha fazlasını 
-                içeren dijital reklam çözümlerimizle, markanızın online görünürlüğünü artırıyor ve hedef kitlenizle 
-                etkili bir şekilde bağlantı kurmanızı sağlıyoruz.
-              </p>
+              {/* Dijital Reklam Stratejileri */}
+              <section id="dijital-stratejiler" className="mb-16">
+                <h2 className="text-3xl font-bold mb-8 text-purple-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  Etkili Dijital Reklam Stratejileri
+                </h2>
+                
+                <div className="relative rounded-xl overflow-hidden shadow-lg mb-10">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-90"></div>
+                  <div className="relative p-10 text-white">
+                    <h3 className="text-2xl font-bold mb-6">AI Destekli Reklam Stratejileri</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-10">
+                      {/* Strateji maddeleri */}
+                      <div className="flex items-start">
+                        <div className="bg-white/20 p-2 rounded-full mr-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="22" y1="12" x2="18" y2="12"></line>
+                            <line x1="6" y1="12" x2="2" y2="12"></line>
+                            <line x1="12" y1="6" x2="12" y2="2"></line>
+                            <line x1="12" y1="22" x2="12" y2="18"></line>
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-lg mb-1">Hassas Hedef Kitle Analizi</h4>
+                          <p className="text-blue-50">
+                            Yapay zeka algoritmaları ile hedef kitlenizi mikro segmentlere ayırarak maksimum kişiselleştirme
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <div className="bg-white/20 p-2 rounded-full mr-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 20v-6M6 20V10M18 20V4"></path>
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-lg mb-1">Dinamik İçerik Optimizasyonu</h4>
+                          <p className="text-blue-50">
+                            Kullanıcı davranışına göre gerçek zamanlı olarak değişen ve optimize olan reklam içerikleri
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <div className="bg-white/20 p-2 rounded-full mr-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-lg mb-1">Çok Kanallı Entegrasyon</h4>
+                          <p className="text-blue-50">
+                            Tüm dijital kanallarınızı koordine eden ve sinerji yaratan entegre pazarlama stratejileri
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <div className="bg-white/20 p-2 rounded-full mr-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-lg mb-1">Hikaye Anlatımı ve İçerik Stratejisi</h4>
+                          <p className="text-blue-50">
+                            AI ile oluşturulan, hedef kitlenizle duygusal bağ kuran içerik ve hikaye stratejileri
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section id="nova-cozumler" className="mb-16">
+                <h2 className="text-3xl font-bold mb-8 text-purple-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  NOVA AJANS'ın AI Destekli Dijital Reklam Çözümleri
+                </h2>
+                
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                  <div className="grid grid-cols-1 md:grid-cols-3">
+                    <div className="p-8 bg-gradient-to-br from-purple-600 to-pink-700 text-white">
+                      <h3 className="text-2xl font-bold mb-4">Neden NOVA AI?</h3>
+                      <p className="mb-6">
+                        Yapay zeka destekli dijital reklam çözümlerimizle markanızı rakiplerinizden öne çıkarıyoruz.
+                      </p>
+                      <div className="flex justify-center">
+                        <Image 
+                          src="/images/blog/bblog3.jpg" 
+                          alt="NOVA AI Dijital Reklam" 
+                          width={200}
+                          height={200}
+                          className="rounded-xl object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="md:col-span-2 p-8">
+                      <h3 className="text-xl font-bold mb-4 text-gray-800">AI Destekli Dijital Reklam Hizmetlerimiz</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="border border-gray-200 rounded-lg p-4 transition-colors hover:border-purple-500 hover:bg-purple-50">
+                          <h4 className="font-semibold text-purple-700 mb-2">Akıllı SEM Yönetimi</h4>
+                          <p className="text-gray-600 text-sm">
+                            Yapay zeka ile optimize edilen ve sürekli öğrenen arama motoru pazarlama kampanyaları
+                          </p>
+                        </div>
+                        <div className="border border-gray-200 rounded-lg p-4 transition-colors hover:border-purple-500 hover:bg-purple-50">
+                          <h4 className="font-semibold text-purple-700 mb-2">Kişiselleştirilmiş Sosyal Medya Reklamları</h4>
+                          <p className="text-gray-600 text-sm">
+                            Her bir kullanıcı segmenti için özel olarak tasarlanmış sosyal medya içerikleri ve reklamları
+                          </p>
+                        </div>
+                        <div className="border border-gray-200 rounded-lg p-4 transition-colors hover:border-purple-500 hover:bg-purple-50">
+                          <h4 className="font-semibold text-purple-700 mb-2">Programatik Reklam Yönetimi</h4>
+                          <p className="text-gray-600 text-sm">
+                            Gerçek zamanlı veri ve yapay zeka algoritmaları ile otomatik optimizasyon sağlayan reklam sistemleri
+                          </p>
+                        </div>
+                        <div className="border border-gray-200 rounded-lg p-4 transition-colors hover:border-purple-500 hover:bg-purple-50">
+                          <h4 className="font-semibold text-purple-700 mb-2">Gelişmiş Performans Analizi</h4>
+                          <p className="text-gray-600 text-sm">
+                            Kampanya verilerinizi derinlemesine analiz eden ve actionable insights sunan AI raporlama sistemleri
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-6 text-center">
+                        <Link href="/hizmetler/ai-dijital-reklam" className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium py-2 px-6 rounded-full hover:shadow-lg transition-all">
+                          AI Dijital Reklam Hizmetlerimiz
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
             
             <div className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-200">
@@ -234,12 +448,6 @@ export default function DijitalReklamBlogPost() {
                     <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
                   </svg>
                   X'de Paylaş
-                </button>
-                <button onClick={shareOnWhatsApp} className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                  </svg>
-                  WhatsApp'ta Paylaş
                 </button>
                 <button onClick={shareOnLinkedIn} className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

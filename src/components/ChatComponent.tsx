@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { useChat, Message } from 'ai/react';
+import { useChat } from 'ai/react';
 import { Send, Bot, User, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
@@ -12,17 +12,6 @@ const AI_PROVIDERS = {
   OPENAI: '/api/openai/chat',
   ANTHROPIC: '/api/anthropic/chat'
 };
-
-// Düşünme kısımlarını temizleyen yardımcı fonksiyon
-function processThinking(text: string): string {
-  // Etiketler arası içeriği temizle
-  let processed = text.replace(/<think>[\s\S]*?<\/think>/g, '');
-  
-  // Açık kalan etiketleri temizle
-  processed = processed.replace(/<\/?think>/g, '');
-  
-  return processed;
-}
 
 export default function ChatComponent() {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,9 +61,6 @@ export default function ChatComponent() {
         console.log("Switching from OpenAI to Anthropic");
         setApiEndpoint(AI_PROVIDERS.ANTHROPIC);
       }
-    },
-    onFinish: (message) => {
-      // ... mevcut kodlar ...
     }
   });
 
@@ -100,12 +86,6 @@ export default function ChatComponent() {
       window.location.reload();
     }
   };
-
-  // Düşünme etiketlerini temizleyelim
-  const processedMessages = messages.map(message => ({
-    ...message,
-    content: processThinking(message.content)
-  }));
 
   return (
     <>
@@ -185,7 +165,7 @@ export default function ChatComponent() {
                 <p className="text-sm mt-1">Ajansımız hakkında bir sorunuz mu var?</p>
               </div>
             ) : (
-              processedMessages.map((message) => (
+              messages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}

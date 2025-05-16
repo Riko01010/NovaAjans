@@ -84,10 +84,6 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex items-center">
-                <Phone size={20} className="text-blue-300 mr-2 flex-shrink-0 drop-shadow-sm" />
-                <span className="text-indigo-100">0 555 520 34 51</span>
-              </li>
-              <li className="flex items-center">
                 <Mail size={20} className="text-blue-300 mr-2 flex-shrink-0 drop-shadow-sm" />
                 <span className="text-indigo-100">info@novaajansai.com</span>
               </li>
